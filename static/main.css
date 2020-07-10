@@ -1,0 +1,115 @@
+body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif;}
+body, html {
+  height: 100%;
+  color: #777;
+  line-height: 1.8;
+}
+
+.display-middle {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  -ms-transform: translate(-50%);
+}
+
+.column {
+  float: center;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+input[type="submit"] {
+  display: none;
+}
+
+.description {
+  font-size: 25px;
+}
+
+.alert {
+  padding: 20px;
+  background-color: #DCDCDC;
+  color: black;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: black;
+  font-weight: bold;
+  float: right;
+  font-size: 24px;
+  line-height: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+.w3-wide {letter-spacing: 10px;}
+.w3-hover-opacity {cursor: pointer;}
+
+@media only screen and (max-width: 600px) {
+  .description {
+    font-size: 15px!important;
+    margin-bottom: 0px;
+  }
+  #videoInput {
+    font-size: 10px!important;
+    padding: 6px 12px!important;
+    letter-spacing: 2px!important;
+  }
+  #videoUpload {
+    font-size: 10px!important;
+    padding: 6px 12px!important;
+    letter-spacing: 2px!important;
+  }
+  #audioInput {
+    font-size: 10px!important;
+    padding: 6px 12px!important;
+    letter-spacing: 2px!important;
+  }
+  #audioUpload {
+    font-size: 10px!important;
+    padding: 6px 12px!important;
+    letter-spacing: 2px!important;
+  }
+  #processButton {
+    font-size: 10px!important;
+    padding: 6px 12px!important;
+    letter-spacing: 2px!important;
+  }
+  #downloadButton {
+    font-size: 10px!important;
+    padding: 6px 12px!important;
+    letter-spacing: 2px!important;
+  }
+  #desktopOptions {
+    display: none;
+  }
+  #mobileOptions {
+    display: block!important;
+  }
+  #desktopDebug {
+    display: none;
+  }
+  #mobileDebug {
+    display: block!important;
+  }
+}

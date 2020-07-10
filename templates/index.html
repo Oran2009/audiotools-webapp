@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<title>WebApp</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+
+<style>
+</style>
+
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar">
+    <a href="#webapp" class="w3-bar-item w3-button">WEBAPP</a>
+  </div>
+</div>
+
+<!-- Container -->
+<div class="w3-display-container w3-opacity-min" id="webapp">
+  <div class="display-middle" style="text-align: center; margin-top: 10%;">
+    <div>
+      <label class="description">
+        Sync and combine audio and video files
+      </label>
+    </div>
+
+    <hr>
+
+    <div>
+      <label id="selectedVideo">Selected video file: </label>
+    </div>
+    <form id="videoForm" action = "http://audiotoolstest.azurewebsites.net/video_upload" method = "POST" enctype = "multipart/form-data">
+      <label id="videoInput" class="w3-button w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style="margin-bottom: 10px;"><input type = "file" name = "file" accept=".mp4" />SELECT VIDEO <span class="w3-hide-small">FILE</span></label>
+      <label id="videoUpload" class="w3-button w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style="margin-bottom: 10px;"><input type = "submit"/>UPLOAD</label> <br><br>
+    </form>
+    <div class="progress">
+      <div id="videoProgressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+    </div>
+
+    <hr>
+
+    <div>
+      <label id="selectedAudio">Selected audio file: </label>
+    </div>
+    <form id="audioForm" action = "http://audiotoolstest.azurewebsites.net/audio_upload" method = "POST" enctype = "multipart/form-data">
+      <label id="audioInput" class="w3-button w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style="margin-bottom: 10px;"><input type = "file" name = "file" accept=".wav" />SELECT AUDIO <span class="w3-hide-small">FILE</span></label>
+      <label id="audioUpload" class="w3-button w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style="margin-bottom: 10px;"><input type = "submit"/>UPLOAD</label> <br><br>
+    </form>
+    <div class="progress">
+      <div id="audioProgressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+    </div>
+
+    <hr>
+
+    <form id="processForm" action = "http://audiotoolstest.azurewebsites.net/process" method = "POST" enctype = "multipart/form-data">
+      <label id="processButton" class="w3-button w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style="margin-bottom: 10px;"><input type = "submit"/>PROCESS</label>
+      <div class="row">
+        <div id="advancedOptions" class="column">
+          <a onclick="toggleOptions()"><label>Advanced Options</label></a> <br>
+          <div id="options" style="display: none; text-align: right;">
+            <div id="desktopOptions">
+              <label id="fft" style="padding-right: 10px;">FFT window size</label><input name="fft" type="text" value="1024"> <label style="font-size: 12px; margin-left:45%;">Recommended to be a power of 2</label><br>
+              <label id="hopLength" style="padding-right: 10px;">Hop Length</label><input name="hopLength" type="text" value="512"> <label style="font-size: 12px; margin-left:50%;">The number of samples between successive frames</label><br>
+              <label id="samplingRate" style="padding-right: 10px;">Sampling Rate</label><input name="samplingRate" type="text" value="44100"> <label style="font-size: 12px; margin-left:50%;">Most applications use 44.1kHz</label><br>
+              <label id="duration" style="padding-right: 10px;">Duration to Check (s)</label><input name="duration" type="text" value="120"> <label style="font-size: 12px; margin-left:50%;">Higher value is slower but more precise</label><br><br>
+            </div>
+            <div id="mobileOptions" style="display: none;">
+              <label>View on Desktop</label>
+            </div>
+          </div>
+        </div>
+        <div id="debugOptions" class="column">
+          <a onclick="toggleDebug()"><label>Debug</label></a> <br>
+          <div id="debug" style="display: none;">
+            <div id="desktopDebug">
+              <label></label>
+            </div>
+            <div id="mobileDebug" style="display: none;">
+              <label>View on Desktop</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form action = "http://audiotoolstest.azurewebsites.net/download" method = "POST" enctype = "multipart/form-data">
+      <label id="downloadButton" class="w3-button w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style="margin-bottom: 10px;"><input type = "submit"/>DOWNLOAD</label>
+    </form>
+
+    <hr>
+
+  </div>
+</div>
+
+
+<!-- Error Flashes -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="alert w3-opacity-min" style="margin-bottom: 0px;">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    {% for category, message in messages %}
+      <strong>{{category}}:</strong>
+      {{ message }}
+      <br>
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+{% block body %}{% endblock %}
+
+<script>
+  function toggleOptions() {
+    var x = document.getElementById("options");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+
+  function toggleDebug() {
+    var x = document.getElementById("debug");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+</script>
+
+<script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous">
+</script>
+<script src="{{url_for('static', filename='upload.js')}}"></script>
+
+</body>
+</html>
