@@ -11,7 +11,7 @@ VIDEO_EXTENSIONS = {'mp4'}
 AUDIO_EXTENSIONS = {'wav'}
 
 app = Flask(__name__)
-app.config.update(SECRET_KEY='f7f7775bd2b4e64479e38bf3d1edc0ccab7882df99503ffb-nA')
+app.config.update(SECRET_KEY='# hidden on github')
 app.config['VIDEO_UPLOAD_FOLDER'] = VIDEO_UPLOAD_FOLDER
 app.config['AUDIO_UPLOAD_FOLDER'] = AUDIO_UPLOAD_FOLDER
 app.config['COMBINED_UPLOAD_FOLDER'] = COMBINED_UPLOAD_FOLDER
