@@ -9,7 +9,7 @@ import random
 import matplotlib.pyplot as plt
 
 
-def sync(videofile, audiofile, method='chroma_stft', n_fft=1024, hop_size=512, sampling_rate=44100, duration_limit=120):
+def sync(videofile, audiofile, method='chroma_stft', n_fft=4410, hop_size=512, sampling_rate=44100, duration_limit=120):
     # Description: Computes a chromagram
     # Input: numpy.ndarray (audio), sampling rate
     # Return: numpy.ndarray (Normalized energy for each chroma bin at each frame)
