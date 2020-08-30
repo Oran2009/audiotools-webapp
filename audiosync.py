@@ -9,7 +9,7 @@ import random
 import matplotlib.pyplot as plt
 
 
-def sync(videofile, audiofile, method='chroma_stft', n_fft=4410, hop_size=512, sampling_rate=44100, duration_limit=120):
+def sync(videofile, audiofile, method='chroma_stft', n_fft=1024, hop_size=512, sampling_rate=44100, duration_limit=120):
     # Description: Computes a chromagram
     # Input: numpy.ndarray (audio), sampling rate
     # Return: numpy.ndarray (Normalized energy for each chroma bin at each frame)
@@ -85,15 +85,15 @@ def sync(videofile, audiofile, method='chroma_stft', n_fft=4410, hop_size=512, s
     move = True if (diff > 0) else False
 
     # Sync using PyDub
-    audio = AudioSegment.from_wav(audio_file)
+    audio_pydub = AudioSegment.from_wav(audio_file)
 
     if move:
         # Trim diff seconds from beginning
-        final = audio[diff * 1000:]
+        final = audio_pydub[diff * 1000:]
     else:
         # Add diff seconds of silence to beginning
         silence = AudioSegment.silent(duration=-diff * 1000)
-        final = silence + audio
+        final = silence + audio_pydub
 
     # LOG results
     # append to log file; create file if not exist
